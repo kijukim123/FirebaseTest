@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PDA_AND_CHECK"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/tool_bar"
+        >
+    </include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="바코드 실사"
+                android:textColor="@color/skyBlue"
+                android:textStyle="bold"
+                android:textSize="24sp"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="초기화" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@color/gray"
+                android:padding="5dp"
+                android:text="기준일자 :"
+                />
+            <ImageButton
+                android:id="@+id/predate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="3"
+                android:src="@drawable/predate"
+                android:scaleType="centerCrop"
+                android:padding="0dp"/>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="10"
+                android:background="@drawable/edge"
+                android:padding="5dp"
+                android:gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/nextdate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="3"
+                android:src="@drawable/nextdate"
+                android:scaleType="centerCrop"
+                android:padding="0dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:inputType="numberSigned"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:background="@color/gray"
+                android:padding="5dp"
+                android:text="위치명 :" />
+
+            <TextView
+                android:id="@+id/barcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
+                android:background="@color/ltgray"
+                android:padding="5dp" />
+
+            <EditText
+                android:id="@+id/hidden"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="@null"
+                android:textColor="#FFFFFF"
+                android:textSize="1sp"
+                android:inputType="numberSigned"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/rack_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="250dp"
+                android:background="@drawable/btn_edge"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="3dp"
+                android:text="랙 초기화"
+                android:textColor="@color/black"
+                android:focusable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="품명"
+                android:background="@drawable/edge"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="수량"
+                android:background="@drawable/edge"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="바코드"
+                android:background="@drawable/edge"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/edge"/>
+            <TextView
+                android:id="@+id/scannum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0 Records To Display ..."
+                android:background="@drawable/edge"
+                android:textSize="13sp"/>
+            <TextView
+                android:id="@+id/notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="위치명 을(를) 스캔하세요."
+                android:textSize="13sp"
+               />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

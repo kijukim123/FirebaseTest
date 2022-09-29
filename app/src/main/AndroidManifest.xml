@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.pda">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PDA"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".PDA_AND_OUTPUT_CANCEL"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".PDA_AND_OUTPUT"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".PDA_AND_OUTPUT_CONFIRM_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_OUTPUT_PLUS_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_OUTPUT_CANCEL_CONFIRM_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_OUTPUT_PARTNO_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_INDIVIDUAL_OUTPUT"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden"  />
+        <activity
+            android:name=".PDA_AND_INDIVIDUAL_OUTPUT_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_INDIVIDUAL_OUTPUT_POPUP_CONFIRM"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".Confirm"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_DIVISION_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_MOVE"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
+        <activity
+            android:name=".PDA_AND_MOVE_POPUP_N"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert"  />
+        <activity
+            android:name=".PDA_AND_MOVE_POPUP_X"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert"  />
+        <activity
+            android:name=".PDA_AND_INPUT"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".PDA_AND_INPUT_CONFIRM"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_CHECK_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_CHECK"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".PDA_AND_LOOKUP_B"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".PDA_AND_LOOKUP_L"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".PDA_AND_DIVISION"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".PDA_AND_MULTI_MERGE"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".UserInfo"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_MERGE_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_MERGE"
+            android:exported="false" />
+        <activity
+            android:name=".PDA_AND_LEGACY_POPUP"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".PDA_AND_LEGACY"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".PopupActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PDA_AND_MAIN"
+            android:exported="false" />
+        <activity
+            android:name=".PDA_AND_LOGIN"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
