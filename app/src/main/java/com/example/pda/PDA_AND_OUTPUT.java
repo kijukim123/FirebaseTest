@@ -224,7 +224,7 @@ public class PDA_AND_OUTPUT extends BaseActivity {
                 EtPreOut.setText("");
                 //피킹수량 확인 스위치
                 PickNumOver = 0;
-            } else if (Integer.parseInt(LIST_PickNumber_OUT.get(position).toString()) < Integer.parseInt(LIST_Number_OUT.get(position).toString())){
+            } else if (strToInt(LIST_PickNumber_OUT.get(position).toString()) < strToInt(LIST_Number_OUT.get(position).toString())){
                 System.out.println("PICKING NUMBER IS SMALLER THAN OUT NUMBER");
                 ItemName.setBackgroundColor(Color.parseColor("#FF5050"));
                 ItemPickNumber.setBackgroundColor(Color.parseColor("#FF5050"));
@@ -450,8 +450,8 @@ public class PDA_AND_OUTPUT extends BaseActivity {
                             System.out.println("++++++++++++++++++++++++++++++++++++++");
                             System.out.println(rs5.getString(1));
                             System.out.println(rs5.getString(2));
-                            System.out.println(qty(rs5.getString(3)));
-                            System.out.println(qty(rs5.getString(4)));
+                            System.out.println(strToInt(rs5.getString(3)));
+                            System.out.println(strToInt(rs5.getString(4)));
                         }
 
                         //세번째 테이블 가져오기
