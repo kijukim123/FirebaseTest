@@ -183,7 +183,7 @@ public class PDA_AND_CHECK extends BaseActivity {
                     do{
                         listViewAdapter.addItem(
                                 r_rs.getString(3),
-                                r_rs.getString(4),
+                                qty(r_rs.getString(4)),
                                 r_rs.getString(1));
                         //리스트뷰에 어뎁터 set
                         listview.setAdapter(listViewAdapter);
@@ -218,7 +218,6 @@ public class PDA_AND_CHECK extends BaseActivity {
                         if(b_cs.getMoreResults()){
                             b_rs=b_cs.getResultSet();
                             listViewAdapter.clearItem();
-                            b_rs.getString(4);
                             while(b_rs.next()){
                                 listViewAdapter.addItem(
                                         b_rs.getString(3),

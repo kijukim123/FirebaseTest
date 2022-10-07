@@ -20,21 +20,27 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import com.m3.sdk.scannerlib.Barcode;
 import com.m3.sdk.scannerlib.BarcodeListener;
 import com.m3.sdk.scannerlib.BarcodeManager;
 
 
 public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializable {
+    ImageButton back;
+    ImageButton logout;
     TextView OutDate;
     TextView OutDateBack, OutDateFore;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 포맷
-    Integer Yint;
+    String Yesterday, Tomorrow;
+    Integer Yint, Tint;
     Spinner SpinnerCUSTCD;
     List<String> Spinner_LIST_CUSTCD = new ArrayList<>();
     List<String> Spinner_LIST_CUSTC = new ArrayList<>();
@@ -54,14 +60,25 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
     String PARTNO, PARTNM;
     String RsPartNm, RsRack, RsOriginQty, RsOutQty, RsBarcode;
     Double IntOriginQty, IntOutQty;
+    ArrayList<String> ListNameIndividual = null;
+    ArrayList<String> ListRackIndividual = null;
+    ArrayList<String> ListQtyIndividual = null;
+    public ArrayList<String> ListOutqtyIndividual = null;
+    public ArrayList<String> ListBarcodeIndividual = null;
+    public ArrayList<String> ListCancelIndividual = null;
     int i, ListSize;
     Button ResetButton, SaveButton;
     String Date, CustCD, CustC;
-    int SelectedSpinner;
+    String PopupConfirm;
+    int SelectedSpinner, SelectedSpinnerIntent;
     String StrOutDate;
     String UserId, Language;
+    String sdate;
 
     Date date = new Date();
+
+    Calendar cal = Calendar.getInstance();
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     // lib
     Barcode mBarcode = null;
@@ -78,9 +95,7 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
         UserId = ((PDA_AND_MAIN) PDA_AND_MAIN.context).Email;  //사용자 아이디
         Language = ((PDA_AND_LOGIN) PDA_AND_LOGIN.context).language;  //사용자 언어
 
-        ImageButton back = findViewById(R.id.back);
-        ImageButton logout = findViewById(R.id.logout);
-        mainbtn(back, logout, UserId);
+
 
         main();
 
@@ -115,23 +130,21 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
         };
         mManager.addListener(mListener);
 
-        OutDate.setText(mFormat.format(date));
+        //기준 일자
+
+        OutDate = findViewById(R.id.tv_indiout_date);
+        cal.setTime(new Date());
+        sdate = df.format(cal.getTime());
+        OutDate.setText(sdate);
         OutDateBack.setOnClickListener(v -> {
-            Yint = Yint - 1;
-            Date dDate = new Date();
-            dDate = new Date(dDate.getTime() + (1000 * 60 * 60 * 24 * Yint));
-            SimpleDateFormat dSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            String Yesterday = dSdf.format(dDate);
-            OutDate.setText(Yesterday);
+            cal.add(Calendar.DATE, -1);
+            OutDate.setText(df.format(cal.getTime()));
         });
         OutDateFore.setOnClickListener(v -> {
-            Yint = Yint + 1;
-            Date dDate = new Date();
-            dDate = new Date(dDate.getTime() + (1000 * 60 * 60 * 24 * Yint));
-            SimpleDateFormat dSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            String Yesterday = dSdf.format(dDate);
-            OutDate.setText(Yesterday);
+            cal.add(Calendar.DATE, 1);
+            OutDate.setText(df.format(cal.getTime()));
         });
+
 
     }
 
@@ -224,6 +237,10 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
         }
     }
 
+
+
+
+
     //바코드 개별 출고 관련 어뎁터
     public class CustomListBarcodeIndiOut extends ArrayAdapter<String> {
         private final Activity context;
@@ -252,7 +269,6 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
                     LIST_OUTQTY_INDIVIDUAL_OUT.remove(position);
                     LIST_BARCODE_INDIVIDUAL_OUT.remove(position);
                     LIST_CANCEL_INDIVIDUAL_OUT.remove(position);
-                    Alert1.setText(LIST_Name_INDIVIDUAL_OUT.size() + " Scanned");
                     CustomListBarcodeIndiOut adapterOut = new CustomListBarcodeIndiOut(PDA_AND_INDIVIDUAL_OUTPUT.this);
                     BarcodeIndiOutListview = (ListView) findViewById(R.id.listview_barcode_indiout);
                     BarcodeIndiOutListview.setAdapter(adapterOut);
@@ -272,7 +288,7 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
 
     }
 
-    void main(){
+    void main() {
         Alert1 = findViewById(R.id.barcode_indioutput_alert1);
         Alert2 = findViewById(R.id.barcode_indioutput_alert2);
         SpinnerCUSTCD = findViewById(R.id.spinner_individual_custom);
@@ -284,8 +300,13 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
         OutDateFore = findViewById(R.id.outdate_foreward);
         BarcodeIndiOutListview = (ListView) findViewById(R.id.listview_barcode_indiout);
 
+        /*********뒤로가기, 로그아웃 **********/
+        ImageButton back = findViewById(R.id.back);
+        ImageButton logout = findViewById(R.id.logout);
+        mainbtn(back, logout, UserId);
     }
-    void reset(){
+
+    void reset() {
         main();
         //리스트뷰 초기화
         LIST_Name_INDIVIDUAL_OUT.clear();
@@ -300,29 +321,33 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
         //출고처 선택 스피너 초기화
         SpinnerCUSTCD.setSelection(0);
         //날짜 금일로 리셋
-        OutDate.setText(mFormat.format(date));
-        Yint = 0;
+        //OutDate.setText(mFormat.format(date));
+        //Yint = 0;
+        OutDate = findViewById(R.id.tv_indiout_date);
+        cal.setTime(new Date());
+        sdate = df.format(cal.getTime());
+        OutDate.setText(sdate);
 
         Alert1.setText(LIST_Name_INDIVIDUAL_OUT.size() + " Records To Display ...");
         Alert2.setTextColor(Color.BLACK);
         Alert2.setText("바코드 을(를) 스캔하세요.");
     }
-    void save(){
+
+    void save() {
         main();
         System.out.println(LIST_Name_INDIVIDUAL_OUT.size());
-        if(SpinnerCUSTCD.getSelectedItemPosition() == 0){
-            moveActivity(Confirm.class,"고객사를 선택해주세요.");
-        }
-        else if(LIST_Name_INDIVIDUAL_OUT.size() == 0){
-            moveActivity(Confirm.class,"저장할 정보가 없습니다.");
-        }
-        else{
+        if (SpinnerCUSTCD.getSelectedItemPosition() == 0) {
+            moveActivity(Confirm.class, "고객사를 선택해주세요.");
+        } else if (LIST_Name_INDIVIDUAL_OUT.size() == 0) {
+            moveActivity(Confirm.class, "저장할 정보가 없습니다.");
+        } else if (SpinnerCUSTCD.getSelectedItemPosition() != 0) {
             Date = OutDate.getText().toString();
             CustCD = SpinnerCUSTCD.getSelectedItem().toString();
             CustC = Spinner_LIST_CUSTC.get(SelectedSpinner);
             Intent intentConfirm = new Intent(getApplicationContext(), PDA_AND_INDIVIDUAL_OUTPUT_POPUP_CONFIRM.class);
             intentConfirm.putExtra("Date", Date);
             intentConfirm.putExtra("CustCD", CustC);
+
 
             ArrayList<String> List_NAME_INDIVIDUAL = new ArrayList<>(LIST_Name_INDIVIDUAL_OUT);
             intentConfirm.putExtra("NameList", List_NAME_INDIVIDUAL);
@@ -337,19 +362,21 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
             ArrayList<String> List_CANCEL_INDIVIDUAL = new ArrayList<>(LIST_CANCEL_INDIVIDUAL_OUT);
             intentConfirm.putExtra("CancelList", List_CANCEL_INDIVIDUAL);
 
-            startActivityForResult(intentConfirm,2);
+
+            startActivityForResult(intentConfirm, 2);
         }
 
     }
-    void scan(){
+
+    void scan() {
         SPreInputA = SPreInput;
 
         try {  //렉바코드 데이터베이스 조회
             //출고번호 조회
-            String query4 = "EXEC SP_PDA_WM00120_INQUERY '" + SPreInputA + "','"+ Language + "'";
+            String query4 = "EXEC SP_PDA_WM00120_INQUERY '" + SPreInputA + "','" + Language + "'";
             CallableStatement cs4 = multi_connectDB(query4);
             ResultSet rs4 = cs4.executeQuery();
-            System.out.println(" DB 연결");
+
 
             while (rs4.next()) {
                 // 병합 품번이 아니고, WM바코드 있고, BM바코드 있는 경우
@@ -359,35 +386,26 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
                     //두번째 테이블 가져오기기
                     if (cs4.getMoreResults()) {
                         rs4 = cs4.getResultSet();
-                        System.out.println(" 테이블 2");
 
                         while (rs4.next()) {
-                            if (LIST_BARCODE_INDIVIDUAL_OUT.contains(rs4.getString(1))){
+                            if (LIST_BARCODE_INDIVIDUAL_OUT.contains(rs4.getString(1))) {
 
                                 Alert1.setText(LIST_Name_INDIVIDUAL_OUT.size() + " Scanned");
                                 Alert2.setTextColor(Color.RED);
                                 Alert2.setText("이미 등록된 바코드입니다.");
-                                EtPreIndividualOut.setFocusable(true);
-                                EtPreIndividualOut.requestFocus();
-                            }
-                            else{
+                            } else {
                                 LIST_Name_INDIVIDUAL_OUT.add(rs4.getString(3));
                                 LIST_RACK_INDIVIDUAL_OUT.add(rs4.getString(4));
-                                LIST_QTY_INDIVIDUAL_OUT.add(qty(rs4.getString(5)));
-                                LIST_OUTQTY_INDIVIDUAL_OUT.add(qty(rs4.getString(5)));
+                                LIST_QTY_INDIVIDUAL_OUT.add(qty(rs4.getString(5)).toString());
+                                LIST_OUTQTY_INDIVIDUAL_OUT.add(qty(rs4.getString(5)).toString());
                                 LIST_BARCODE_INDIVIDUAL_OUT.add(rs4.getString(1));
                                 LIST_CANCEL_INDIVIDUAL_OUT.add("ㅡ");
-                                System.out.println(" 값 추가");
-
                                 PDA_AND_INDIVIDUAL_OUTPUT.CustomListBarcodeIndiOut adapterOut = new PDA_AND_INDIVIDUAL_OUTPUT.CustomListBarcodeIndiOut(PDA_AND_INDIVIDUAL_OUTPUT.this);
                                 BarcodeIndiOutListview = (ListView) findViewById(R.id.listview_barcode_indiout);
                                 BarcodeIndiOutListview.setAdapter(adapterOut);
-                                System.out.println("어댑터 연결");
                                 Alert1.setText(LIST_Name_INDIVIDUAL_OUT.size() + " Scanned");
                                 Alert2.setTextColor(Color.BLACK);
                                 Alert2.setText("바코드 스캔이 완료되었습니다.");
-                                EtPreIndividualOut.setFocusable(true);
-                                EtPreIndividualOut.requestFocus();
                             }
 
                         }
@@ -418,39 +436,36 @@ public class PDA_AND_INDIVIDUAL_OUTPUT extends BaseActivity implements Serializa
                     intent.putExtra("BARCODE", SPreInputA);
                     intent.putExtra("CustPosition", SelectedSpinner);
                     intent.putExtra("StrOutDate", StrOutDate);
-                    startActivityForResult(intent,1);
-                }
-                else if(rs4.getString(1).equals("입고된 바코드가 아닙니다.")){
+                    startActivityForResult(intent, 1);
+                } else if (rs4.getString(1).equals("입고된 바코드가 아닙니다.")) {
                     Alert1.setText(LIST_Name_INDIVIDUAL_OUT.size() + " Scanned");
                     Alert2.setTextColor(Color.RED);
                     Alert2.setText("입고된 바코드가 아닙니다.");
                     EtPreIndividualOut.setText("");
-                    EtPreIndividualOut.setFocusable(true);
-                    EtPreIndividualOut.requestFocus();
-                }
-                else if(rs4.getString(1).equals("존재하지 않는 바코드입니다.")){
+                } else if (rs4.getString(1).equals("존재하지 않는 바코드입니다.")) {
                     Alert1.setText(LIST_Name_INDIVIDUAL_OUT.size() + " Scanned");
                     Alert2.setTextColor(Color.RED);
                     Alert2.setText("존재하지 않는 바코드입니다.");
                     EtPreIndividualOut.setText("");
-                    EtPreIndividualOut.setFocusable(true);
-                    EtPreIndividualOut.requestFocus();
+                }
+                else{
+                    System.out.println("THIS IS EXCEPTION WHEN BARCODE SCAN");
                 }
 
             }
-
 
 
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
         }
     }
+
     void customer() {
         main();
         Spinner_LIST_CUSTCD.add("고객사를 선택하세요.");
         Spinner_LIST_CUSTC.add("");
         try {
-            String query1 = "EXEC SP_COMMONCODE_INQUERY_CUSTCD 'Y', '"+ Language +"'";
+            String query1 = "EXEC SP_COMMONCODE_INQUERY_CUSTCD 'Y', '" + Language + "'";
             Statement st1 = connectDB();
             ResultSet rs1 = st1.executeQuery(query1);
 
